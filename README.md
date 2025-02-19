@@ -66,7 +66,7 @@ A simple and efficient URL shortener built using Node.js and Express. This proje
 POST /api/shorten
 Content-Type: application/json
 {
-    "originalUrl" : "https://www.youtube.com/watch?v=y3a8y7oR8yM&t=4189s",
+    "originalUrl" : "https://example.com",
     "title" : "Example",
     "back_half" : "example123"
 }
