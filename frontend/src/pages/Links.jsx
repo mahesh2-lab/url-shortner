@@ -8,11 +8,14 @@ import {
   ShieldX,
   MoreHorizontal,
   Calendar,
+  Trash2,
 } from "lucide-react";
 import AnimatedContent from "../components/AnimateCotent";
 import { a, useTrail } from "@react-spring/web";
 import useGetLink from "../hooks/useGetLinks";
 import { useEffect } from "react";
+import useDeleteLink from "../hooks/useDeleteLink";
+import { DeleteDialog } from "../components/custom/DeleteDialog";
 
 const Link = ({
   title,
@@ -22,6 +25,9 @@ const Link = ({
   createdAt,
   expiresAt,
 }) => {
+  const [open, setOpen] = useState(false);
+  const { deleteLink, loading } = useDeleteLink();
+
   return (
     <AnimatedContent
       distance={100}
@@ -34,6 +40,13 @@ const Link = ({
       threshold={0.2}
       className="flex flex-col sm:flex-row w-full items-start space-y-4 bg-white sm:space-y-0 sm:space-x-4 p-5 my-6 rounded-lg border bg-card text-card-foreground shadow-sm"
     >
+      <DeleteDialog
+        open={open}
+        setOpen={setOpen}
+        data={shortId}
+        deleteLink={deleteLink}
+        loading={loading}
+      />
       <div className="flex flex-col flex-grow">
         <h3 className="text-xl font-semibold line-clamp-2">{title}</h3>
         <div className="flex flex-col gap-y-3 mt-2">
@@ -93,9 +106,15 @@ const Link = ({
           <Share2 className="h-4 w-4" />
           <span className="sr-only">Share</span>
         </Button>
-        <Button variant="secondary" className="h-8 w-8">
-          <MoreHorizontal className="h-4 w-4" />
-          <span className="sr-only">More</span>
+        <Button
+          variant="secondary"
+          className="h-8 w-8"
+          onClick={() => {
+            setOpen((prev) => !prev);
+          }}
+        >
+          <Trash2 className="h-4 w-4" />
+          <span className="sr-only">Delete</span>
         </Button>
       </div>
     </AnimatedContent>
@@ -103,11 +122,7 @@ const Link = ({
 };
 
 function Links() {
-  const [url, setUrl] = useState([]);
   const { data: urls, loading, setPage, hasMore } = useGetLink();
-
-  
-
 
   const trail = useTrail(urls.length, {
     opacity: 1,
@@ -135,20 +150,30 @@ function Links() {
         ) : (
           <div className="flex-1 overflow-y-auto">
             {trail.map((style, index) => (
-              <Link key={`${urls[index].shortId}-${index}`} {...urls[index]} style={style} />
+              <Link
+                key={`${urls[index].shortId}-${index}`}
+                {...urls[index]}
+                style={style}
+              />
             ))}
 
-            <div>
-              <div className="h-14 bg-white rounded-md">
-                <div className="flex justify-center items-center h-full ">
-                  <div>
-                    <button className="hover:underline" disabled={!hasMore} onClick={() => setPage((prev) => prev + 1)}>
-                      Load More
-                    </button>
+            {hasMore && (
+              <div>
+                <div className="h-14 bg-white rounded-md">
+                  <div className="flex justify-center items-center h-full ">
+                    <div>
+                      <button
+                        className="hover:underline"
+                        disabled={!hasMore}
+                        onClick={() => setPage((prev) => prev + 1)}
+                      >
+                        Load More
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>

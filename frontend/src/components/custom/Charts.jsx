@@ -15,6 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useEffect, useState } from "react";
 
 const chartConfig = {
   date: {
@@ -28,6 +29,7 @@ const chartConfig = {
 };
 
 export function GraphChart({data}) {
+
   
   return (
     <Card className="h-full bottom-2">

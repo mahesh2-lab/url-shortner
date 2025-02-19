@@ -13,7 +13,6 @@ export const Shorten = async (req, res) => {
     const { originalUrl, title, back_half } = req.body;
     const ip = requestIp.getClientIp(req);
     const userId = req.cookies.userId;
-    console.log(originalUrl);
     
 
     const { headTitle } = await fetchHeaderData(originalUrl);
@@ -71,8 +70,7 @@ export const ShortId = async (req, res) => {
       deviceType = agent.device.toString();
     }
 
-    const geo = geoip.lookup("152.56.0.193");
-    console.log(geo);
+    const geo = geoip.lookup(ip);
 
     const country = getCountryISO3(geo?.country) || "Unknown";
     const region = geo?.region || "Unknown";
@@ -127,7 +125,7 @@ export const getUserUrls = async (req, res) => {
     const userUrls = await db
       .select()
       .from(urlTable)
-      .limit(limitInt)
+      .where(eq(urlTable.userId, userId))
       .orderBy(desc(urlTable.createdAt)) // Assuming createdAt is the timestamp column
       .limit(limitInt)
       .offset(offset)
@@ -140,11 +138,7 @@ export const getUserUrls = async (req, res) => {
     
     const totalUrls = result[0]?.count || 0;
 
-    console.log(totalUrls, limitInt);
-    
-    console.log(Math.floor(totalUrls / limitInt));
-    
-
+  
     res.json({
       urls: userUrls,
       pagination: {
@@ -163,8 +157,10 @@ export const getUserUrls = async (req, res) => {
 
 
 export const deleteUrl = async (req, res) => {
+  
   try {
     const userId = req.cookies.userId;
+    
     if (!userId)
       return res.status(401).json({ message: "User not recognized" });
 
@@ -178,7 +174,7 @@ export const deleteUrl = async (req, res) => {
     const url = urlArray[0];
 
     if (!url) return res.status(404).json({ message: "URL not found" });
-
+      
     if (url.userId !== userId)
       return res.status(403).json({ message: "Unauthorized" });
 
@@ -190,36 +186,6 @@ export const deleteUrl = async (req, res) => {
   }
 
 }
-
-// export const analyticsData = async (req, res) => {
-//   try {
-//     const userId = req.cookies.userId;
-//     if (!userId) return res.status(401).json({ message: "User not recognized" });
-
-//     // Fetch all URLs created by the user
-//     const userUrls = await db
-//       .select({ id: urlTable.id })
-//       .from(urlTable)
-//       .where(eq(urlTable.userId, userId));
-
-//     if (userUrls.length === 0) return res.status(404).json({ message: "No URLs found" });
-
-//     // Extract URL IDs
-//     const urlIds = userUrls.map((url) => url.id);
-
-//     // Fetch analytics data for all URLs
-//     const analyticsData = await db
-//       .select()
-//       .from(analytics)
-//       .where(inArray(analytics.urlId, urlIds));
-
-//     res.json({ analytics: analyticsData });
-//   } catch (error) {
-//     console.error("Error fetching analytics:", error);
-//     res.status(500).json({ message: "Server error", error });
-//   }
-// };
-
 
 export const analyticsData = async (req, res) => {
   try {

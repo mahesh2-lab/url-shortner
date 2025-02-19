@@ -24,6 +24,7 @@ import Analytics from "@/pages/Analytics";
 import Home from "@/pages/Home";
 import Create from "@/pages/create";
 import { Toaster } from "@/components/ui/sonner";
+import { Helmet } from "react-helmet";
 
 function Layout() {
   const location = useLocation(); // ✅ Now inside Router context
@@ -44,6 +45,10 @@ function Layout() {
 
   return (
     <div className="overflow-hidden flex h-screen bg-gray-50">
+      <Helmet>
+        <title>{breadcrumbLabel} | snaplink</title>
+      </Helmet>
+      
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>

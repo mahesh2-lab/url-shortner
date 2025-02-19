@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import cors from "cors";
-import { Shorten, ShortId,getUserUrls, analyticsData } from "./controllers/urls.controller.js";
+import { Shorten, ShortId,getUserUrls, analyticsData , deleteUrl} from "./controllers/urls.controller.js";
 import { urlTable } from "./db/schema.js";
 import morgan from "morgan";
 import { setUserCookie } from "./middlewere/setUserCookie.js";
@@ -29,12 +29,13 @@ const limiter = rateLimit({
   max: 100,
   message: "Too many requests, please try again later.",
 });
-app.use(limiter);
+// app.use(limiter);
 
 app.post("/api/shorten", Shorten);
 app.get("/:shortId", ShortId);
 app.get("/api/urls",getUserUrls);
 app.get("/api/analytics", analyticsData);
+app.delete("/api/url/:shortId", deleteUrl);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the URL Shortener API");

@@ -13,6 +13,7 @@ import { PieGraph } from "../components/custom/PieGraph";
 import { DataTable } from "../components/custom/Table";
 import GeoChart from "../components/custom/GeoGraph";
 import iso31661 from "iso-3166-1";
+import { Helmet } from "react-helmet-async";
 
 const Analytics = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -24,7 +25,6 @@ const Analytics = () => {
       .then((data) => {
         if (data.success) {
           setAnalytics(data.data);
-          console.log(data.data);
         }
       })
       .catch((err) => console.error("Error fetching analytics:", err))
@@ -32,10 +32,9 @@ const Analytics = () => {
   }, []);
 
   function getCountryName(alpha3Code) {
-    console.log(alpha3Code);
-
+    if (!alpha3Code) return null;
     const country = iso31661.whereAlpha3(alpha3Code);
-    return country ? country.country : alpha3Code;
+    return country ? country.country : null;
   }
 
   if (loading) {
@@ -118,8 +117,9 @@ const Analytics = () => {
                     <ChartSpline />
                   </p>
                   <span>
-                    {getCountryName(analytics?.topPerformingLocation.country) ||
-                      "Unkonwn"}
+                    {getCountryName(
+                      analytics?.topPerformingLocation?.country
+                    ) || "Unkonwn"}
                   </span>
                 </h3>
                 <p>{analytics?.topPerformingLocation?.totalClicks} Clicks</p>

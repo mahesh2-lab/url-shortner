@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function ShareDialog({ open, setOpen, data }) {
   const handleCloseDialog = (event) => {
@@ -45,7 +46,7 @@ export function ShareDialog({ open, setOpen, data }) {
                 variant="ghost"
                 className="rounded-none border text-white font-semibold"
               >
-                Go to Link
+                <Link to="/links">Go to Link</Link>
               </Button>
               <Button
                 className="rounded-none font-semibold"
@@ -56,7 +57,7 @@ export function ShareDialog({ open, setOpen, data }) {
                   toast.success("Link copied to clipboard 🤩");
                 }}
               >
-                Copy Link
+                Copy Link'
               </Button>
             </div>
           </div>

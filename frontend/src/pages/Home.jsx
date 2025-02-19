@@ -1,18 +1,14 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Copy,
-  ChartColumnBig,
-  Share2,
-  Pencil,
-  MoreHorizontal,
-  Calendar,
-  Tag,
-} from "lucide-react";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
     <>
+      <Helmet>
+        <title>Snaplink | Home</title>
+      </Helmet>
+
       <div className="max-w-6xl mx-auto h-screen flex flex-col">
         <div className="flex items-center justify-between w-full mb-4">
           <h2 className="text-4xl text-white font-bold">
@@ -30,7 +26,9 @@ function Home() {
                   <div className="flex w-1/2 flex-col items-center justify-center ">
                     <h4 className="text-lg pb-2 font-bold">Make it short</h4>
                     <button className="text-sm font-semibold text-blue-500 border rounded-sm border-blue-700 py-1 px-2">
+                      <Link to={"/create"}>
                       Go to links
+                      </Link>
                     </button>
                   </div>
                 </div>

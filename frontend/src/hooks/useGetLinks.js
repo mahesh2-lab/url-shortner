@@ -23,11 +23,10 @@ const useGetLink = (limit = 5) => {
       );
 
       setData((prev) => [...prev, ...result.data.urls]);
-      
       setHasMore(
-        result.data.pagination.page <= result.data.pagination.totalPages
+        result.data.pagination.page < result.data.pagination.totalPages
       );
-      console.log(hasMore);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -46,7 +45,7 @@ const useGetLink = (limit = 5) => {
   }, [page]);
 
 
-  return { data, loading, setPage, hasMore };
+  return { data, loading, setPage , hasMore};
 };
 
 export default useGetLink;
