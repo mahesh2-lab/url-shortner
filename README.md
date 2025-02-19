@@ -34,7 +34,8 @@ A simple and efficient URL shortener built using Node.js and Express. This proje
 4. Create a `.env` file and configure the following:
    ```env
    PORT=5000
-   MONGO_URI=your_mongodb_connection_string
+   DATABASE_URL=your_postgres_connection_string
+   FRONTEND_URL=http://localhost:5173
    BASE_URL=http://localhost:5000
    ```
 5. Start the server:
@@ -46,14 +47,18 @@ A simple and efficient URL shortener built using Node.js and Express. This proje
 
 1. **Shorten a URL:** Send a POST request to `/api/shorten` with a long URL.
 2. **Redirect to Original URL:** Access the shortened URL to get redirected.
-3. **Analytics (Optional):** Track the number of visits per shortened URL.
+3. **Analytics:** Track the number of visits per shortened URL.
 
 ## API Endpoints 🌐
 
-| Method | Endpoint       | Description                |
-|--------|---------------|----------------------------|
-| POST   | `/api/shorten` | Shortens a long URL       |
-| GET    | `/:shortCode`  | Redirects to the long URL |
+| Method | Endpoint        | Description                                      |
+|--------|-----------------|--------------------------------------------------|
+| GET    | `/`             | `{"message": "Welcome to the URL Shortener API"}`|
+| POST   | `/api/shorten`  | Shortens a long URL                              |
+| GET    | `/:shortCode`   | Redirects to the long URL                        |
+| GET    | `/api/urls`     | List of URLs created by the user.                |
+| GET    | `/api/analytics`| Analytics data for the shortened URLs.           |
+
 
 ## Example Request 📌
 
@@ -61,7 +66,9 @@ A simple and efficient URL shortener built using Node.js and Express. This proje
 POST /api/shorten
 Content-Type: application/json
 {
-  "longUrl": "https://example.com"
+    "originalUrl" : "https://www.youtube.com/watch?v=y3a8y7oR8yM&t=4189s",
+    "title" : "Example",
+    "back_half" : "example123"
 }
 ```
 
@@ -69,7 +76,7 @@ Content-Type: application/json
 
 ```json
 {
-  "shortUrl": "http://localhost:5000/abcd123"
+  "shortUrl": "http://localhost:5000/example123"
 }
 ```
 
