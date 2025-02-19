@@ -8,28 +8,28 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { Shorten, ShortId,getUserUrls, analyticsData } from "./controllers/urls.controller.js";
 import { urlTable } from "./db/schema.js";
+import morgan from "morgan";
 import { setUserCookie } from "./middlewere/setUserCookie.js";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
-    credentials: true, // Allow cookies, authorization headers, etc.
-  })
-);
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true,
+}));
 app.use(setUserCookie);  
-
 
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
+  max: 100,
   message: "Too many requests, please try again later.",
 });
-// app.use(limiter);
+app.use(limiter);
 
 app.post("/api/shorten", Shorten);
 app.get("/:shortId", ShortId);
@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the URL Shortener API");
 });
 
-cron.schedule('*/2 * * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
   console.log("Running link cleanup...");
 
   try {
@@ -54,5 +54,5 @@ cron.schedule('*/2 * * * *', async () => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

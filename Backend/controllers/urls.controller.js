@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { urlTable, analytics } from "../db/schema.js";
 import { db } from "../src/db.js";
-import { count, sql, desc, eq } from "drizzle-orm";
+import { count, sql, desc, eq} from "drizzle-orm";
 import useragent from "useragent"; // For device detection
 import geoip from "geoip-lite"; // For location detection
 import requestIp from "request-ip"; // For IP address detection
@@ -100,7 +100,7 @@ export const ShortId = async (req, res) => {
     if (url.expiresAt && url.expiresAt < new Date())
       return res.status(410).json({ message: "URL expired" });
 
-    const update = await db
+    await db
       .update(urlTable)
       .set({ clicks: url.clicks + 1 })
       .where(eq(urlTable.shortId, shortId));
@@ -118,17 +118,49 @@ export const getUserUrls = async (req, res) => {
     if (!userId)
       return res.status(401).json({ message: "User not recognized" });
 
+    const { page = 1, limit = 5 } = req.query; 
+    const pageInt = parseInt(page, 10);
+    const limitInt = parseInt(limit, 10);
+    const offset = (pageInt - 1) * limitInt;
+    
+
     const userUrls = await db
       .select()
       .from(urlTable)
-      .where(eq(urlTable.userId, userId))
-      .limit(10);
+      .limit(limitInt)
+      .orderBy(desc(urlTable.createdAt)) // Assuming createdAt is the timestamp column
+      .limit(limitInt)
+      .offset(offset)
+      
 
-    res.json({ urls: userUrls });
+      const result = await db
+      .select({ count: sql`COUNT(*)` })
+      .from(urlTable)
+      .where(eq(urlTable.userId, userId));
+    
+    const totalUrls = result[0]?.count || 0;
+
+    console.log(totalUrls, limitInt);
+    
+    console.log(Math.floor(totalUrls / limitInt));
+    
+
+    res.json({
+      urls: userUrls,
+      pagination: {
+        total: parseInt(totalUrls),
+        page: parseInt(page),
+        limit: parseInt(limit),
+        totalPages: Math.ceil(totalUrls / limitInt),
+      },
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error fetching user URLs:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
 
 export const deleteUrl = async (req, res) => {
   try {

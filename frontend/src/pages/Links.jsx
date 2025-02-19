@@ -10,8 +10,8 @@ import {
   Calendar,
 } from "lucide-react";
 import AnimatedContent from "../components/AnimateCotent";
-import { useTrail } from "@react-spring/web";
-import { useGetLink } from "../hooks/useGetLinks";
+import { a, useTrail } from "@react-spring/web";
+import useGetLink from "../hooks/useGetLinks";
 import { useEffect } from "react";
 
 const Link = ({
@@ -62,9 +62,7 @@ const Link = ({
           <div className="flex gap-x-4 mt-4">
             <span className="flex text-primary font-bold space-x-2">
               <ChartColumnBig />
-              <p className="">
-                {clicks} engagements
-              </p>
+              <p className="">{clicks} engagements</p>
             </span>
             <span className="flex text-primary font-normal space-x-2">
               <Calendar />
@@ -106,23 +104,12 @@ const Link = ({
 
 function Links() {
   const [url, setUrl] = useState([]);
-  const { loading, getlink } = useGetLink();
-  console.log(loading);
+  const { data: urls, loading, setPage, hasMore } = useGetLink();
 
-  useEffect(() => {
-    const fetchLinks = async () => {
-      const urls = await getlink();
-      if (urls) {
-        setUrl(urls.urls);
-      }
-    };
+  
 
-    fetchLinks();
-  }, []);
 
-  console.log(url);
-
-  const trail = useTrail(url.length, {
+  const trail = useTrail(urls.length, {
     opacity: 1,
     y: 0,
     from: { opacity: 0, y: 50 },
@@ -131,25 +118,40 @@ function Links() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto h-screen flex flex-col">
+    <div className="max-w-6xl mx-auto h-screen flex flex-col ">
       <div className="flex items-center justify-between w-full mb-4">
         <h2 className="text-4xl text-white font-bold">Links</h2>
       </div>
-      {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <div className="loader">Loading...</div>
-        </div>
-      ) : url.length === 0 ? (
-        <div className="flex justify-center items-center h-screen">
-          <h2 className="text-2xl text-white font-bold">No Links Found</h2>
-        </div>
-      ) : (
-        <div className="flex-1 overflow-y-auto">
-          {trail.map((style, index) => (
-            <Link key={url[index].shortId} {...url[index]} style={style} />
-          ))}
-        </div>
-      )}
+      <hr className="border-[0.5] border-stone-800 mb-4" />
+      <div className="flex gap-4 flex-col w-full overflow-y-scroll h-full mb-24">
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <div className="loader">Loading...</div>
+          </div>
+        ) : urls.length === 0 ? (
+          <div className="flex justify-center items-center h-screen">
+            <h2 className="text-2xl text-white font-bold">No Links Found</h2>
+          </div>
+        ) : (
+          <div className="flex-1 overflow-y-auto">
+            {trail.map((style, index) => (
+              <Link key={`${urls[index].shortId}-${index}`} {...urls[index]} style={style} />
+            ))}
+
+            <div>
+              <div className="h-14 bg-white rounded-md">
+                <div className="flex justify-center items-center h-full ">
+                  <div>
+                    <button className="hover:underline" disabled={!hasMore} onClick={() => setPage((prev) => prev + 1)}>
+                      Load More
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
