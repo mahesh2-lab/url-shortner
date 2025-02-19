@@ -13,8 +13,9 @@ A simple and efficient URL shortener built using Node.js and Express. This proje
 ## Technologies Used 🛠️
 
 - **Backend:** Node.js, Express.js
-- **Database:** MongoDB (or any other preferred database)
-- **Frontend:** HTML, CSS, JavaScript (optional for UI)
+- **Database:** PostgreSQL 
+- **ORM:** Drizzle 
+- **Frontend:** React.js, Tailwind CSS, Shadcn
 - **Other:** Short Unique ID Generator
 
 ## Installation & Setup 🚀
