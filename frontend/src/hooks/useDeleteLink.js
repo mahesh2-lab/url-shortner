@@ -13,7 +13,7 @@ const useDeleteLink = () => {
     setError(null);
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/url/${linkId}`,
+        `/api/url/${linkId}`,
         { withCredentials: true }
       );
       

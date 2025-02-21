@@ -8,7 +8,7 @@ export const useGetLink = () => {
   const getlink = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/analytics/", {
+      const res = await axios.get("/api/analytics", {
         withCredentials: true,
       });
 

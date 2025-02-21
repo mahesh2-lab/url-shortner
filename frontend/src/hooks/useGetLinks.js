@@ -16,7 +16,7 @@ const useGetLink = (limit = 5) => {
     setLoading(true);
     try {
       const result = await axios.get(
-        `http://localhost:5000/api/urls?page=${page}&limit=${5}`,
+        `/api/urls?page=${page}&limit=${5}`,
         {
           withCredentials: true,
         }

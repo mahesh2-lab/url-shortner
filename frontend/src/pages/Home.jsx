@@ -25,11 +25,11 @@ function Home() {
                   </div>
                   <div className="flex w-1/2 flex-col items-center justify-center ">
                     <h4 className="text-lg pb-2 font-bold">Make it short</h4>
-                    <button className="text-sm font-semibold text-blue-500 border rounded-sm border-blue-700 py-1 px-2">
-                      <Link to={"/create"}>
-                      Go to links
-                      </Link>
-                    </button>
+                    <Link to={"/create"}>
+                      <button className="text-sm font-semibold text-blue-500 border rounded-sm border-blue-700 py-1 px-2">
+                        Go to links
+                      </button>
+                    </Link>
                   </div>
                 </div>
 
@@ -57,9 +57,11 @@ function Home() {
                   </div>
                   <div className="flex w-1/2 flex-col items-center justify-center ">
                     <h4 className="text-lg pb-2 font-bold">Analytics</h4>
-                    <button className="text-sm font-semibold text-blue-500 border rounded-sm border-blue-700 py-1 px-2">
-                      Go to Analytics
-                    </button>
+                    <Link to={"/analytics"}>
+                      <button className="text-sm font-semibold text-blue-500 border rounded-sm border-blue-700 py-1 px-2">
+                        Go to Analytics
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

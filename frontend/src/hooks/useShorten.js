@@ -28,7 +28,7 @@ export const useShorten = () => {
       
 
       try {
-        const res = await axios.post("http://localhost:5000/api/shorten", url, {
+        const res = await axios.post("/api/shorten", url, {
           withCredentials: true,
         });
 

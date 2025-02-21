@@ -20,7 +20,7 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/analytics`)
+    fetch(`/api/analytics`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

@@ -10,3 +10,17 @@ export default defineConfig({
     
   },
 });
+
+// cron.schedule('0 0 * * *', async () => {
+//   console.log("Running link cleanup...");
+
+//   try {
+//     await db
+//       .delete(urlTable)
+//       .where(sql`${urlTable.createdAt} < NOW() - INTERVAL '30 days'`);
+
+//     console.log("Expired short links deleted.");
+//   } catch (error) {
+//     console.error("Error deleting expired links:", error);
+//   }
+// });

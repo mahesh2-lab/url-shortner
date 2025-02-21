@@ -71,10 +71,11 @@ export function AppSidebar({ ...props }) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"></div>
+                <div className="flex bg-transparent items-center justify-center rounded-lg bg-sidebar- text-sidebar-primary-foreground">
+                  <img src="logo.svg" alt="" srcset="" className=" h-8 bg-contain bg-blend-overlay"/>
+                </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">SnapLink </span>
-                  <span className="">v1.0.0</span>
+                  <span className="font-semibold font-lobster text-xl">SnapLink </span>
                 </div>
               </a>
             </SidebarMenuButton>

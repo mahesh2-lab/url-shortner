@@ -53,12 +53,12 @@ const Link = ({
           <div className="flex flex-col gap-1">
             <p className="font-semibold text-[#0c3ebb]  flex">
               <a
-                href={`http://localhost:5000/${shortId}`}
+                href={`http://localhost:5000/short/${shortId}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
               >
-                {`http://localhost:5000/${shortId}`}
+                {`http://localhost:5000/short/${shortId}`}
               </a>
             </p>
             <p className="font-medium ">

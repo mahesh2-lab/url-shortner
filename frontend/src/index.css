@@ -1,11 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
 }
+
+.lobster-regular {
+  font-family: "Lobster", serif;
+}
+
 
 /* Track */
 ::-webkit-scrollbar-track {
@@ -24,6 +28,10 @@
 /* ... */
 
 @layer base {
+  .lobster-regular {
+    font-family: "Lobster", serif;
+  }
+  
   :root {
     --radius: 0.5rem;
 

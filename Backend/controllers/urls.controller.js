@@ -45,45 +45,41 @@ export const Shorten = async (req, res) => {
     res.json({ shortUrl: { shortId } });
   } catch (error) {
     console.error("Error shortening URL:", error); // Add logging for debugging
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: " Server error in shorten link", error: error.message });
   }
 };
 
 export const ShortId = async (req, res) => {
   try {
     const { shortId } = req.params;
-    const userAgentString = req.headers["user-agent"];
-    const ip = requestIp.getClientIp(req);
-
+    const userAgentString = req.headers["user-agent"] || "Unknown";
+    const ip = requestIp.getClientIp(req) || "0.0.0.0";
     const referrer = req.headers["referer"] || "Direct";
 
-    // Get Device Type
     const agent = useragent.parse(userAgentString);
     let deviceType = "Unknown";
     if (agent.device.toString() === "Other") {
-      deviceType =
-        agent.os.toString().includes("Windows") ||
-        agent.os.toString().includes("Mac")
-          ? "Desktop"
-          : "Mobile";
+      deviceType = /Windows|Mac/.test(agent.os.toString()) ? "Desktop" : "Mobile";
     } else {
       deviceType = agent.device.toString();
     }
 
-    const geo = geoip.lookup(ip);
-
-    const country = getCountryISO3(geo?.country) || "Unknown";
-    const region = geo?.region || "Unknown";
-
-    const urlArray = await db
-      .select()
-      .from(urlTable)
-      .where(eq(urlTable.shortId, shortId));
+    const geo = geoip.lookup(ip) || {};
+    const country = getCountryISO3(geo.country) || "Unknown";
+    const region = geo.region || "Unknown";
+    console.log(shortId);
+    
+    const urlArray = await db.select().from(urlTable).where(eq(urlTable.shortId, shortId));
+    // console.log(urlArray);
+    if (!urlArray.length) return res.status(404).json({ message: "URL not found" });
 
     const url = urlArray[0];
 
+    if (url.expiresAt && url.expiresAt < new Date())
+      return res.status(410).json({ message: "URL expired" });
+
     await db.insert(analytics).values({
-      urlId: url.id, // Link to URL table
+      urlId: url.id,
       userAgent: userAgentString,
       ipAddress: ip,
       referrer,
@@ -93,20 +89,14 @@ export const ShortId = async (req, res) => {
       clickedAt: new Date(),
     });
 
-    if (!url) return res.status(404).json({ message: "URL not found" });
+    await db.update(urlTable).set({ clicks: url.clicks + 1 }).where(eq(urlTable.shortId, shortId));
 
-    if (url.expiresAt && url.expiresAt < new Date())
-      return res.status(410).json({ message: "URL expired" });
-
-    await db
-      .update(urlTable)
-      .set({ clicks: url.clicks + 1 })
-      .where(eq(urlTable.shortId, shortId));
-   
+    if (!url.originalUrl) return res.status(500).json({ message: "Invalid URL" });
+    
     res.redirect(url.originalUrl);
-    // res.json({ originalUrl: url.originalUrl });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error in ShortId:", error);
+    res.status(500).json({ message: "Server error in ShortId", error: error.message });
   }
 };
 
@@ -117,6 +107,8 @@ export const getUserUrls = async (req, res) => {
       return res.status(401).json({ message: "User not recognized" });
 
     const { page = 1, limit = 5 } = req.query; 
+    console.log(req.query);
+    
     const pageInt = parseInt(page, 10);
     const limitInt = parseInt(limit, 10);
     const offset = (pageInt - 1) * limitInt;
@@ -150,7 +142,7 @@ export const getUserUrls = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching user URLs:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error in get links", error: error.message });
   }
 };
 
