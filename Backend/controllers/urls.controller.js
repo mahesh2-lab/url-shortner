@@ -227,17 +227,16 @@ export const analyticsData = async (req, res) => {
       .where(eq(urlTable.userId, userId))
       .limit(1);
 
+    if (!user.length) return res.status(404).json({ message: "User not found" });
+
     const analyticsUser = await db
       .select()
       .from(analytics)
       .where(eq(analytics.userId, userId))
       .limit(1);
 
-    if (!user) return res.status(404).json({ message: "User not found" });
-    if (!analyticsUser)
+    if (!analyticsUser.length)
       return res.status(404).json({ message: "Analytics not found" });
-
-    
 
     const clicksByDate = await db
       .select({
@@ -249,7 +248,6 @@ export const analyticsData = async (req, res) => {
       .groupBy(sql`DATE(${analytics.clickedAt})`)
       .orderBy(desc(count()));
 
-    // Fetch top performing date (most clicks in a day)
     const topPerformingDate = await db
       .select({
         date: sql`DATE(${analytics.clickedAt})`,
@@ -261,13 +259,13 @@ export const analyticsData = async (req, res) => {
       .orderBy(desc(count()))
       .limit(1);
 
-    // Fetch clicks by device type
     const temp = await db
       .select({ deviceType: analytics.deviceType, totalClicks: count() })
       .from(analytics)
       .where(eq(analytics.userId, user[0].userId))
       .groupBy(analytics.deviceType)
       .orderBy(desc(count()));
+
     const getRandomColor = () =>
       `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
@@ -276,7 +274,6 @@ export const analyticsData = async (req, res) => {
       fill: getRandomColor(),
     }));
 
-    // Fetch clicks by referrer
     const clicksByReferrer = await db
       .select({ referrer: analytics.referrer, totalClicks: count() })
       .from(analytics)
@@ -284,7 +281,6 @@ export const analyticsData = async (req, res) => {
       .groupBy(analytics.referrer)
       .orderBy(desc(count()));
 
-    // Fetch clicks by location
     const clicksByLocation = await db
       .select({ country: analytics.country, totalClicks: count() })
       .from(analytics)
@@ -292,7 +288,6 @@ export const analyticsData = async (req, res) => {
       .groupBy(analytics.country)
       .orderBy(desc(count()));
 
-    // Fetch top performing location (most clicks)
     const topPerformingLocation = await db
       .select({ country: analytics.country, totalClicks: count() })
       .from(analytics)
@@ -301,7 +296,7 @@ export const analyticsData = async (req, res) => {
       .orderBy(desc(count()))
       .limit(1);
 
-    res.json({
+    res.status(200).json({
       success: true,
       data: {
         clicksByDate,
@@ -313,8 +308,7 @@ export const analyticsData = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
-
-    res.status(500).json({ message: "Server error", error });
+    console.error("Error fetching analytics data:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

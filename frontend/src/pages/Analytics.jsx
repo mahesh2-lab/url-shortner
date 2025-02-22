@@ -13,7 +13,6 @@ import { PieGraph } from "../components/custom/PieGraph";
 import { DataTable } from "../components/custom/Table";
 import GeoChart from "../components/custom/GeoGraph";
 import iso31661 from "iso-3166-1";
-import { Helmet } from "react-helmet-async";
 
 const Analytics = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -24,14 +23,19 @@ const Analytics = () => {
       await fetch(`/api/analytics`)
         .then((res) => res.json())
         .then((data) => {
-          if (!data.success) {
-            setAnalytics({});
-            
+          if (data.success) {
+            setAnalytics(data.data);
+            console.log(data.data);
           }
-          setAnalytics(data.data);
+          
+          
+          
         })
         .catch((err) => console.error("Error fetching analytics:", err))
-        .finally(() => setLoading(false));
+        .catch((err) => {
+          console.error("Error fetching analytics:", err);
+          setAnalytics({});
+        })
     };
     fetchData();
   }, []);
