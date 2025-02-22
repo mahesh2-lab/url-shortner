@@ -9,6 +9,7 @@ import {
   getUserUrls,
   analyticsData,
   deleteUrl,
+  getUrl,
 } from "./controllers/urls.controller.js";
 import morgan from "morgan";
 import { setUserCookie } from "./middlewere/setUserCookie.js";
@@ -43,6 +44,7 @@ app.get("/api/analytics", analyticsData);
 app.delete("/api/url/:shortId", deleteUrl);
 app.post("/api/shorten", Shorten);
 app.get("/short/:shortId", ShortId);
+app.get("/api/urls/url/:shortId", getUrl);
 
 
 const __dirname = path.resolve();

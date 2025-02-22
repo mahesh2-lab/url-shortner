@@ -1,0 +1,2 @@
+ALTER TABLE "analytics" ADD COLUMN "user_id" integer NOT NULL;--> statement-breakpoint
+ALTER TABLE "analytics" ADD CONSTRAINT "analytics_user_id_Urls_userId_fk" FOREIGN KEY ("user_id") REFERENCES "public"."Urls"("userId") ON DELETE cascade ON UPDATE no action;

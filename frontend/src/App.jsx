@@ -39,7 +39,7 @@ function App() {
 
 
   return (
-  <div className="overflow-hidden flex h-screen bg-gray-50">
+  <div className="overflow-hidden flex h-screen bg-gray-50 font-proximasemibold font-normal">
       <Helmet>
         <title>{breadcrumbLabel} | Snaplink</title>
       </Helmet>

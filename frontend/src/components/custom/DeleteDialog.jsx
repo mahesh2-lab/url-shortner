@@ -13,10 +13,7 @@ import { toast } from "sonner";
 
 export function DeleteDialog({ open, setOpen, data, deleteLink, loading }) {
   const navigate = useNavigate();
-  // console.log(data);
   
-  
-
   const handleCloseDialog = (event) => {
     event.preventDefault();
     setOpen(false);

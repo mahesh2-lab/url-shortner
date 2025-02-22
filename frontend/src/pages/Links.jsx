@@ -10,12 +10,10 @@ import {
   Calendar,
   Trash2,
 } from "lucide-react";
+import { Link as Send } from "react-router-dom";
 import AnimatedContent from "../components/AnimateCotent";
 import { a, useTrail } from "@react-spring/web";
 import useGetLink from "../hooks/useGetLinks";
-import { useEffect } from "react";
-import useDeleteLink from "../hooks/useDeleteLink";
-import { DeleteDialog } from "../components/custom/DeleteDialog";
 
 const Link = ({
   title,
@@ -25,8 +23,6 @@ const Link = ({
   createdAt,
   expiresAt,
 }) => {
-  const [open, setOpen] = useState(false);
-  const { deleteLink, loading } = useDeleteLink();
 
   return (
     <AnimatedContent
@@ -40,15 +36,12 @@ const Link = ({
       threshold={0.2}
       className="flex flex-col sm:flex-row w-full items-start space-y-4 bg-white sm:space-y-0 sm:space-x-4 p-5 my-6 rounded-lg border bg-card text-card-foreground shadow-sm"
     >
-      <DeleteDialog
-        open={open}
-        setOpen={setOpen}
-        data={shortId}
-        deleteLink={deleteLink}
-        loading={loading}
-      />
       <div className="flex flex-col flex-grow">
-        <h3 className="text-xl font-semibold line-clamp-2">{title}</h3>
+        <h3 className="text-xl font-semibold line-clamp-2 hover:underline cursor-pointer ">
+          <Send to={`/link/${shortId}/detail`}>
+         {title}
+          </Send>
+        </h3>
         <div className="flex flex-col gap-y-3 mt-2">
           <div className="flex flex-col gap-1">
             <p className="font-semibold text-[#0c3ebb]  flex">
@@ -93,10 +86,8 @@ const Link = ({
           variant="secondary"
           className="px-3"
           onClick={() => {
-            navigator.clipboard.writeText(shortUrl);
-            toast("Link Copy Sucessfully", {
-              description: "Link Copied to Clipboard",
-            });
+            navigator.clipboard.writeText(`http://localhost:5000/short/${shortId}`);            
+            toast("Your link has been copied to clipboard 🎉");
           }}
         >
           <Copy className="h-4 w-4" />
@@ -105,16 +96,6 @@ const Link = ({
         <Button variant="secondary" className="px-3">
           <Share2 className="h-4 w-4" />
           <span className="sr-only">Share</span>
-        </Button>
-        <Button
-          variant="secondary"
-          className="h-8 w-8"
-          onClick={() => {
-            setOpen((prev) => !prev);
-          }}
-        >
-          <Trash2 className="h-4 w-4" />
-          <span className="sr-only">Delete</span>
         </Button>
       </div>
     </AnimatedContent>

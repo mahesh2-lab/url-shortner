@@ -19,16 +19,20 @@ const Analytics = () => {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setLoading(true);
-    fetch(`/api/analytics`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setAnalytics(data.data);
-        }
-      })
-      .catch((err) => console.error("Error fetching analytics:", err))
-      .finally(() => setLoading(false));
+    const fetchData = async () => {
+      setLoading(true);
+      await fetch(`/api/analytics`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setAnalytics(data.data);
+            console.log(data.data);
+          }
+        })
+        .catch((err) => console.error("Error fetching analytics:", err))
+        .finally(() => setLoading(false));
+    };
+    fetchData();
   }, []);
 
   function getCountryName(alpha3Code) {
@@ -55,6 +59,77 @@ const Analytics = () => {
               <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
               <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
               <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if ( Object.keys(analytics).length === 0 || !analytics) {
+    return (
+      <div className="flex gap-4 w-full overflow-y-scroll h-full mb-24">
+        <div className="flex gap-4 w-full h-full ">
+          <div className="w-1/2 flex  flex-col gap-7  ">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">Top Performing Dates</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center gap-y-4 justify-center">
+                <h3 className="flex gap-x-2 text-2xl items-center">
+                  <span>No data available</span>
+                </h3>
+                <p> </p>
+              </CardContent>
+              <CardFooter className="flex justify-center"></CardFooter>
+            </Card>
+
+            <div className="rounded-lg ">
+              <Card className=" col-span-2 border h-64 w-full rounded-lg">
+                <h3 className="flex text-2xl items-center justify-center h-full ">
+                  <span>No data available</span>
+                </h3>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">
+                  Top Performing Location
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center gap-y-4 justify-center">
+                <h3 className="flex text-2xl items-center justify-center h-full ">
+                  <span>No data available</span>
+                </h3>
+              </CardContent>
+              <CardFooter className="flex justify-center"></CardFooter>
+            </Card>
+            <div className="">
+              <Card className=" col-span-2 border h-64 w-full rounded-lg">
+                <h3 className="flex text-2xl items-center justify-center h-full ">
+                  <span>No data available</span>
+                </h3>
+              </Card>
+            </div>
+          </div>
+          <div className="w-1/2 flex flex-col gap-7">
+            <div className=" ">
+              <Card className=" col-span-2 border h-64 w-full rounded-lg">
+                <h3 className="flex text-2xl items-center justify-center h-full ">
+                  <span>No data available</span>
+                </h3>
+              </Card>
+            </div>
+            <div>
+              <Card className=" col-span-2 border h-64 w-full rounded-lg">
+                <h3 className="flex text-2xl items-center justify-center h-full ">
+                  <span>No data available</span>
+                </h3>
+              </Card>
+            </div>
+            <div>
+              <DataTable data={analytics?.clicksByLocation} loading={loading} />
             </div>
           </div>
         </div>

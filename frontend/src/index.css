@@ -11,6 +11,7 @@
 }
 
 
+
 /* Track */
 ::-webkit-scrollbar-track {
   display: none;
@@ -31,7 +32,9 @@
   .lobster-regular {
     font-family: "Lobster", serif;
   }
-  
+  html {
+    font-family: "Proxima Nova", system-ui, sans-serif;
+  }
   :root {
     --radius: 0.5rem;
 
@@ -119,4 +122,39 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+@font-face {
+  font-family: 'Proxima Nova Thin';
+  src: url('/fonts/ProximaNova-Thin.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Medium';
+  src: url('/fonts/ProximaNova-Light.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Regular';
+  src: url('/fonts/ProximaNova-Regular.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Semibold';
+  src: url('/fonts/ProximaNova-Semibold.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bold';
+  src: url('/fonts/ProximaNova-Bold.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova ExtraBold';
+  src: url('/fonts/ProximaNova-Extrabold.otf') format('opentype');
+  font-style: normal;
 }

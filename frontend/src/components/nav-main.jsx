@@ -19,13 +19,14 @@ export function NavMain({ items }) {
             key={item.title}
             asChild
             defaultOpen={item.isActive}
-            className="group/collapsible"
+            className="group/collapsible "
           >
             <NavLink to={item.url}>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   tooltip={item.title}
                   isActive={item.isActive}
+                  className="font-normal text-base"
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

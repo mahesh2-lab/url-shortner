@@ -10,8 +10,15 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["Inter", "Arial", "sans-serif"], 
         lobster: ["Lobster", "serif"],
+        proxima: ['Proxima Nova', 'sans-serif'],
+        proximabold: ['Proxima Nova Bold', 'sans-serif'],
+        proximasemibold: ['Proxima Nova Semibold', 'sans-serif'],
+        proximalight: ['Proxima Nova Light', 'sans-serif'],
+        proximaregular: ['Proxima Nova Regular', 'sans-serif'],
+        proximathin: ['Proxima Nova Thin', 'sans-serif'],
+        proximaextrabold: ['Proxima Nova Extrabold', 'sans-serif'],
+
       },
       colors: {
         sidebar: {

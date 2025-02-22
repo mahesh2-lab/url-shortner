@@ -23,6 +23,7 @@ import {
   export const analytics = pgTable("analytics", {
     id: serial().primaryKey(),
     urlId: integer("url_id").references(() => urlTable.id, { onDelete: "cascade" }).notNull(),
+    userId: varchar("user_id").references(() => urlTable.userId, { onDelete: "cascade" }).notNull(),
     userAgent: varchar("user_agent", { length: 512 }).notNull(),
     ipAddress: varchar("ip_address", { length: 45 }).notNull(), // IPv6 Compatible
     referrer: varchar("referrer", { length: 512 }),
