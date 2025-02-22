@@ -237,9 +237,6 @@ export const analyticsData = async (req, res) => {
     if (!analyticsUser)
       return res.status(404).json({ message: "Analytics not found" });
 
-    console.log(analyticsUser[0].userId);
-    console.log(user[0].userId);
-    
     
 
     const clicksByDate = await db
