@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node Backend/index.js",
     "dev": "nodemon backend/index.js",
-    "build": "npm i && npm install --prefix frontend --force",
+    "build": "npm i && npm install --prefix frontend --force && npm run build --prefix frontend",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:push": "drizzle-kit push",
     "postinstall": "npm run drizzle:generate && npm run drizzle:push"
