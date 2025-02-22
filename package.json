@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./backend/index.js",
-    "dev": "nodemon ./backend/index.js",
+    "start": "node backend/index.js",
+    "dev": "nodemon backend/index.js",
     "build": "npm i && npm install --prefix frontend --force && npm run build --prefix frontend",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:push": "drizzle-kit push",
