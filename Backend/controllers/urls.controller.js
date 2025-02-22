@@ -227,7 +227,6 @@ export const analyticsData = async (req, res) => {
       .where(eq(urlTable.userId, userId))
       .limit(1);
 
-    if (!user.length) return res.status(404).json({ message: "User not found" });
 
     const analyticsUser = await db
       .select()
