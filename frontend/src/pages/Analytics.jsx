@@ -27,15 +27,13 @@ const Analytics = () => {
             setAnalytics(data.data);
             console.log(data.data);
           }
-          
-          
-          
+          setLoading(false);
         })
-        .catch((err) => console.error("Error fetching analytics:", err))
         .catch((err) => {
           console.error("Error fetching analytics:", err);
+          setLoading(false);
           setAnalytics({});
-        })
+        });
     };
     fetchData();
   }, []);
@@ -71,7 +69,7 @@ const Analytics = () => {
     );
   }
 
-  if ( Object.keys(analytics).length === 0 || !analytics) {
+  if (Object.keys(analytics).length === 0 || !analytics) {
     return (
       <div className="flex gap-4 w-full overflow-y-scroll h-full mb-24">
         <div className="flex gap-4 w-full h-full ">

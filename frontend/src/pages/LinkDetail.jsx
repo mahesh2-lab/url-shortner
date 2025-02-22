@@ -73,7 +73,7 @@ export const LinkDetail = () => {
                     <div className="flex flex-col gap-1">
                       <p className="font-semibold text-[#0c3ebb] flex">
                         <a
-                          href={`http://localhost:5000/${shortUrl?.shortId}`}
+                          href={`/${shortUrl?.shortId}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:underline font-proxima cursor-pointer"
@@ -81,7 +81,8 @@ export const LinkDetail = () => {
                           {loading ? (
                             <Skeleton width={200} height={50} />
                           ) : (
-                            `http://localhost:5000/${shortUrl?.shortId}`
+                            `${window.location.origin}/${shortUrl?.shortId}`
+                          
                           )}
                         </a>
                       </p>
