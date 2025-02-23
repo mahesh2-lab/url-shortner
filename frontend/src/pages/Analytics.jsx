@@ -23,6 +23,11 @@ const Analytics = () => {
       await fetch(`/api/analytics`)
         .then((res) => res.json())
         .then((data) => {
+          if (data.error) {
+            console.error("Error fetching analytics:", data.error);
+            setLoading(false);
+            setAnalytics({});
+          }
           if (data.success) {
             setAnalytics(data.data);
             console.log(data.data);
