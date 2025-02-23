@@ -20,7 +20,7 @@ const Analytics = () => {
   const {loading, getanalytics} =  useGetAnalytics();
 
   useEffect(() => {
-   const fetchData = async () => {
+   const fetchData = async () => { 
         const response = await getanalytics();
         if (response.success) {
           setAnalytics(response.data);

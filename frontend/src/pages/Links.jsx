@@ -46,12 +46,12 @@ const Link = ({
           <div className="flex flex-col gap-1">
             <p className="font-semibold text-[#0c3ebb]  flex">
               <a
-                href={`http://localhost:5000/short/${shortId}`}
+                href={`/short/${shortId}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
               >
-                {`http://localhost:5000/short/${shortId}`}
+                {`/short/${shortId}`}
               </a>
             </p>
             <p className="font-medium ">
@@ -86,7 +86,7 @@ const Link = ({
           variant="secondary"
           className="px-3"
           onClick={() => {
-            navigator.clipboard.writeText(`http://localhost:5000/short/${shortId}`);            
+            navigator.clipboard.writeText(`${window.location.origin}/short/${shortId}`);            
             toast("Your link has been copied to clipboard 🎉");
           }}
         >

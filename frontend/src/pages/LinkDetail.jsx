@@ -58,7 +58,7 @@ export const LinkDetail = () => {
                 <div>
                   <h2 className="text-[32px] font-proximaextrabold line-clamp-2 text-start">
                     {loading ? (
-                      <Skeleton width={200} height={50} />
+                      <Skeleton className="bg-gray-400" width={200} height={50} />
                     ) : (
                       shortUrl?.title
                     )}
@@ -73,15 +73,15 @@ export const LinkDetail = () => {
                     <div className="flex flex-col gap-1">
                       <p className="font-semibold text-[#0c3ebb] flex">
                         <a
-                          href={`/${shortUrl?.shortId}`}
+                          href={`/short/${shortUrl?.shortId}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="hover:underline font-proxima cursor-pointer"
                         >
                           {loading ? (
-                            <Skeleton width={200} height={50} />
+                            <Skeleton className="bg-gray-400"  width={200} height={50} />
                           ) : (
-                            `${window.location.origin}/${shortUrl?.shortId}`
+                            `${window.location.origin}/short/${shortUrl?.shortId}`
                           
                           )}
                         </a>
@@ -90,10 +90,11 @@ export const LinkDetail = () => {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
+                          href={shortUrl?.originalUrl}
                           className="hover:underline font-proximalight cursor-pointer"
                         >
                           {loading ? (
-                            <Skeleton width={200} height={50} />
+                            <Skeleton  className="bg-gray-400" width={200} height={50} />
                           ) : (
                             shortUrl?.originalUrl
                           )}
@@ -141,7 +142,7 @@ export const LinkDetail = () => {
                     <p className="text-[14px]">
                       Created on{" "}
                       {loading ? (
-                        <Skeleton width={200} height={50} />
+                        <Skeleton  className="bg-gray-400" width={200} height={50} />
                       ) : (
                         `${new Date(
                           shortUrl?.createdAt

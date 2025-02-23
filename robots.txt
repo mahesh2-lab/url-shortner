@@ -1,0 +1,23 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Disallow:
+
+# Block access to sensitive directories
+Disallow: /api/
+Disallow: /login/
+Disallow: /wp-admin/
+Disallow: /private/
+Disallow: /cart/
+Disallow: /checkout/
+
+# Prevent search engines from indexing query parameters (prevents duplicate content issues)
+Disallow: /*?*
+Disallow: /*&*
+
+# Allow indexing of CSS, JavaScript, and images
+Allow: /*.css$
+Allow: /*.js$
+Allow: /images/
+
+# Sitemap location
+Sitemap: https://yourwebsite.com/sitemap.xml
