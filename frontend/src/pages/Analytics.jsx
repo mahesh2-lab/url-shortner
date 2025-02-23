@@ -13,35 +13,23 @@ import { PieGraph } from "../components/custom/PieGraph";
 import { DataTable } from "../components/custom/Table";
 import GeoChart from "../components/custom/GeoGraph";
 import iso31661 from "iso-3166-1";
+import { useGetAnalytics } from "../hooks/useGetAnalytics";
 
 const Analytics = () => {
   const [analytics, setAnalytics] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const {loading, getanalytics} =  useGetAnalytics();
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetch(`/api/analytics`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            console.error("Error fetching analytics:", data.error);
-            setLoading(false);
-            setAnalytics({});
-          }
-          if (data.success) {
-            setAnalytics(data.data);
-            console.log(data.data);
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching analytics:", err);
-          setLoading(false);
-          setAnalytics({});
-        });
-    };
+   const fetchData = async () => {
+        const response = await getanalytics();
+        if (response.success) {
+          setAnalytics(response.data);
+        }
+    }
     fetchData();
   }, []);
+  
+  
 
   function getCountryName(alpha3Code) {
     if (!alpha3Code) return null;
@@ -49,32 +37,8 @@ const Analytics = () => {
     return country ? country.country : null;
   }
 
-  if (loading) {
-    return (
-      <div className="max-w-[1480px] mx-auto h-screen flex flex-col">
-        <div className="flex items-center justify-between w-full mb-6">
-          <h2 className="text-4xl text-white font-bold">Analytics</h2>
-        </div>
-        <hr className="border-[0.5] border-stone-800 mb-4" />
-        <div className="flex gap-4 w-full overflow-y-scroll h-full mb-24">
-          <div className="flex gap-4 w-full h-full">
-            <div className="w-1/2 flex flex-col gap-7">
-              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
-              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
-              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
-            </div>
-            <div className="w-1/2 flex flex-col gap-7">
-              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
-              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
-              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (Object.keys(analytics).length === 0 || !analytics) {
+  if (analytics === null) {
+    
     return (
       <div className="flex gap-4 w-full overflow-y-scroll h-full mb-24">
         <div className="flex gap-4 w-full h-full ">
@@ -137,7 +101,38 @@ const Analytics = () => {
               </Card>
             </div>
             <div>
-              <DataTable data={analytics?.clicksByLocation} loading={loading} />
+            <Card className=" col-span-2 border h-64 w-full rounded-lg">
+                <h3 className="flex text-2xl items-center justify-center h-full ">
+                  <span>No data available</span>
+                </h3>
+              </Card>
+=            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
+
+  if (loading) {
+    return (
+      <div className="max-w-[1480px] mx-auto h-screen flex flex-col">
+        <div className="flex items-center justify-between w-full mb-6">
+          <h2 className="text-4xl text-white font-bold">Analytics</h2>
+        </div>
+        <hr className="border-[0.5] border-stone-800 mb-4" />
+        <div className="flex gap-4 w-full overflow-y-scroll h-full mb-24">
+          <div className="flex gap-4 w-full h-full">
+            <div className="w-1/2 flex flex-col gap-7">
+              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
+              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
+              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
+            </div>
+            <div className="w-1/2 flex flex-col gap-7">
+              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
+              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
+              <div className="bg-gray-300 animate-pulse h-64 w-full rounded-lg"></div>
             </div>
           </div>
         </div>
@@ -145,6 +140,7 @@ const Analytics = () => {
     );
   }
 
+ 
   return (
     <div className="max-w-[1480px] mx-auto  h-screen flex flex-col ">
       <div className="flex items-center justify-between w-full mb-6 ">

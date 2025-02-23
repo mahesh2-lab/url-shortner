@@ -235,7 +235,7 @@ export const analyticsData = async (req, res) => {
       .limit(1);
 
     if (!analyticsUser.length)
-      return res.status(404).json({ error: "Analytics not found" });
+      return res.status(404).json({ message: "Analytics not found" });
 
     const clicksByDate = await db
       .select({

@@ -2,27 +2,34 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-export const useGetLink = () => {
+export const useGetAnalytics = () => {
   const [loading, setLoading] = useState(false);
 
-  const getlink = async () => {
+  const getanalytics = async () => {
     setLoading(true);
     try {
       const res = await axios.get("/api/analytics", {
         withCredentials: true,
       });
+      console.log(res.data);
+      
+
+      if (res.status === 404) {
+          throw new Error("Analytics not found");
+      }
 
       if (res.status !== 200) {
-        throw new Error(res.data.message);
+        console.log(res.data);
       }
 
       return res.data;
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Analytics could not be found");
+      throw error;
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, getlink };
+  return { loading, getanalytics };
 };
